@@ -21,7 +21,7 @@ Wndows:
 ```
 > py -m pip install --user virtualenv
 > py -m virtualenv venv
-> .\env\Scripts\activate
+> .\venv\Scripts\activate
 > pip install -r requirements.txt
 ```
 
