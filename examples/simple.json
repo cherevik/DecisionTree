@@ -1,12 +1,12 @@
 {
   "parameters": [{
     "name": "LIKELY_OUTCOME_PROBABILITY",
-    "value": 0.8,
+    "value": 0.6,
     "description": "The probability of the likely outcome"
   }, {
     "name": "UNLIKELY_OUTCOME_VALUE",
     "value": 1000,
-    "description": "The value of an unlikely outcome"
+    "description": "The value of the unlikely outcome"
   }],
   "tree": {
     "type": "decision",
