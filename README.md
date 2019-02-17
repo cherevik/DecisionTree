@@ -5,7 +5,7 @@ Before you can use the script, you must install the following prerequisites:
 - Python 3: https://www.python.org/downloads/
 - Graphviz: https://graphviz.gitlab.io/download/
 
-Next, use your favorite GitHub client to clone the DecisionTree project. 
+Next, use your favorite GitHub client to clone the DecisionTree project on your machine. 
 In a command window, change to the project directory, and execute the following commands:
 
 Mac: 
