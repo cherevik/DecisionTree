@@ -1,0 +1,117 @@
+{
+  "parameters": [{
+    "name": "ANNUAL_BURN_RATE",
+    "value": 60,
+    "description": "The annual amount required to maintain the current lifestyle"
+  }, {
+    "name": "CURRENT_SALARY",
+    "value": 100,
+    "description": "The current annual salary"
+  }, {
+    "name": "SALARY_AFTER_PROMOTION",
+    "value": 150,
+    "description": "The annual salary after promotion"
+  }, {
+    "name": "PROMOTION_PROBABILITY",
+    "value": 0.5,
+    "description": "The probability of getting a promotion"
+  }, {
+    "name": "MVP_SUCCESS_PROBABILITY",
+    "value": 0.5,
+    "description": "The probability of building a successful MVP"
+  }, {
+    "name": "VC_ROUND_PROBABILITY",
+    "value": 0.6,
+    "description": "The probability of raising a VC round"
+  }, {
+    "name": "VC_FUNDED_STARTUP_VALUE",
+    "value": 40000,
+    "description": "The value of the VC funded startup after 3 years"
+  }, {
+    "name": "VC_FUNDED_STARTUP_SHARE",
+    "value": 0.2,
+    "description": "Ownership in a VC funded startup after 3 years"
+  }, {
+    "name": "VC_GTM_PROBABILITY",
+    "value": 0.1,
+    "description": "The probability of finding a GTM fit after a VC round"
+  }, {
+    "name": "VC_FUNDED_SALARY",
+    "value": 80,
+    "description": "The salary at a VC funded startup"
+  }, {
+    "name": "SELF_GTM_PROBABILITY",
+    "value": 0.3,
+    "description": "The probability of finding a GTM fit without a VC round"
+  }, {
+    "name": "BOOTSTRAPPED_COMPANY_VALUE",
+    "value": 1500,
+    "description": "The value of a boostrapped company after 5 years"
+  }, {
+    "name": "SELF_FUNDED_SALARY",
+    "value": 60,
+    "description": "The salary while bootstrapping"
+  }],
+  "tree": {
+    "type": "decision",
+    "alternatives": [{
+      "label": "Develop an MVP",
+      "type": "event",
+      "outcomes": [{
+        "label": "Found PMF",
+        "probability": "MVP_SUCCESS_PROBABILITY",
+        "type": "decision",
+        "alternatives": [{
+          "label": "Raise a VC round",
+          "type": "event",
+          "outcomes": [{
+            "label": "Found investors",
+            "probability": "VC_ROUND_PROBABILITY",
+            "type": "event",
+            "outcomes": [{
+              "label": "Found GTM",
+              "probability": "VC_GTM_PROBABILITY",
+              "value": "-5*ANNUAL_BURN_RATE + 3*VC_FUNDED_SALARY + VC_FUNDED_STARTUP_SHARE*VC_FUNDED_STARTUP_VALUE"
+            }, {
+              "label": "GTM not found",
+              "probability": "1-VC_GTM_PROBABILITY",
+              "value": "-5*ANNUAL_BURN_RATE + 3*VC_FUNDED_SALARY"
+            }]
+          }, {
+            "label": "Investors not found",
+            "probability": "1-VC_ROUND_PROBABILITY",
+            "value": "-5*ANNUAL_BURN_RATE + 3*CURRENT_SALARY"
+          }]
+        }, {
+          "label": "Bootstrap",
+          "type": "event",
+          "outcomes": [{
+            "label": "Found GTM",
+            "probability": "SELF_GTM_PROBABILITY",
+            "value": "-5*ANNUAL_BURN_RATE + 4*SELF_FUNDED_SALARY + BOOTSTRAPPED_COMPANY_VALUE"
+          }, {
+            "label": "GTM not found",
+            "probability": "1-SELF_GTM_PROBABILITY",
+            "value": "-5*ANNUAL_BURN_RATE + 3*CURRENT_SALARY"
+          }]
+        }]
+      }, {
+        "label": "PMF not found",
+        "probability": "1-MVP_SUCCESS_PROBABILITY",
+        "value": "-5*ANNUAL_BURN_RATE + 4*CURRENT_SALARY"
+      }]
+    }, {
+      "label": "Stay employed",
+      "type": "event",
+      "outcomes": [{
+        "probability": "PROMOTION_PROBABILITY",
+        "label": "Get promoted",
+        "value": "5*(SALARY_AFTER_PROMOTION-ANNUAL_BURN_RATE)"
+      }, {
+        "probability": "1-PROMOTION_PROBABILITY",
+        "label": "No promotion",
+        "value": "5*(CURRENT_SALARY-ANNUAL_BURN_RATE)"
+      }]
+    }]
+  }
+}
