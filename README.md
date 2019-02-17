@@ -1,2 +1,3 @@
-# DecisionTree
+# Decision Tree
+
 Decision tree analysis
