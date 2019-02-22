@@ -33,8 +33,12 @@ def processDecisionNode(node, context):
     rv["name"] = getNodeName(node, context)
 
     alternatives = [processNode(n, context) for n in node["alternatives"]]
-    rv["value"] = max([n.get("value", 0) for n in alternatives])
-    rv["alternatives"] = alternatives
+    if len(alternatives) == 0:
+        rv["value"] = 0
+        rv["alternatives"] = []
+    else:        
+        rv["value"] = max([n.get("value", 0) for n in alternatives])
+        rv["alternatives"] = alternatives
 
     dot = context["dot"]
     dot.node(rv["name"], shape="square", fixedsize="true", xlabel="{:,.0f}".format(rv["value"]))
