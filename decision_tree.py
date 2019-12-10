@@ -146,12 +146,22 @@ def main():
     parameters = {}
     context = {"counter": 1, "dot": dot, "parameters": parameters, "excel": excel}
 
+    # process values
     for v in data["parameters"]:
         if "name" in v and "value" in v:
             parameters[v["name"]] = v["value"]
-
             row = excel["row"]
             worksheet.write(row-1, 0, v["value"])
+            worksheet.write(row-1, 1, v["description"])
+            workbook.define_name(v["name"], "Tree!$A$" + str(row))
+            excel["row"] = row + 1
+
+    # process expressions
+    for v in data["parameters"]:
+        if "name" in v and "expression" in v:
+            parameters[v["name"]] = evaluateExpression(v["expression"], context)
+            row = excel["row"]
+            worksheet.write(row-1, 0, "=" + v["expression"])
             worksheet.write(row-1, 1, v["description"])
             workbook.define_name(v["name"], "Tree!$A$" + str(row))
             excel["row"] = row + 1
